@@ -15,7 +15,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(Task::with('priority')->get());
+        $tasks = Task::with('priority')
+            ->handleSort(request()->query('sort_by') ?? 'time')
+            ->get();
+            
+        return TaskResource::collection($tasks);
     }
 
     /**
